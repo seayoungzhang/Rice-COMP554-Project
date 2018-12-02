@@ -35,11 +35,9 @@ int main(int argc,char *argv[]) {
                 gettimeofday(&time1,NULL);
                 for(i=0;i<size;i++) {
                     for(j=0;j<size;j++) {
-                        sm = 0;
                         for(k=0;k<size;k++) {
-                            sm += a[i*size+k]*b[k*size+j];
+                            sm = a[i*size+k]*b[k*size+j];
                         }
-                        c[i*size+j] += sm;
                     }
                 }
                 gettimeofday(&time2,NULL);
@@ -48,11 +46,9 @@ int main(int argc,char *argv[]) {
                 gettimeofday(&time1,NULL);
                 for(j=0;j<size;j++) {
                     for(i=0;i<size;i++) {
-                        sm = 0;
                         for(k=0;k<size;k++) {
-                            sm += a[i*size+k]*b[k*size+j];
+                            sm = a[i*size+k]*b[k*size+j];
                         }
-                        c[i*size+j] += sm;
                     }
                 }
                 gettimeofday(&time2,NULL);
@@ -63,7 +59,8 @@ int main(int argc,char *argv[]) {
                     for(k=0;k<size;k++) {
                         m = a[i*size+k];
                         for(j=0;j<size;j++) {
-                            c[i*size+j] += m*b[k*size+j];
+                            sm = m*b[k*size+j];
+                            // c[i*size+j] += m*b[k*size+j];
                         }
                     }
                 }
@@ -75,7 +72,8 @@ int main(int argc,char *argv[]) {
                     for(i=0;i<size;i++) {
                         m = a[i*size+k];
                         for(j=0;j<size;j++) {
-                            c[i*size+j] += m*b[k*size+j];
+                            sm = m*b[k*size+j];
+                            // c[i*size+j] += m*b[k*size+j];
                         }
                     }
                 }
@@ -87,7 +85,8 @@ int main(int argc,char *argv[]) {
                     for(k=0;k<size;k++) {
                         n = b[k*size+j];
                         for(i=0;i<size;i++) {
-                            c[i*size+j] += a[i*size+k]*n;
+                            sm = a[i*size+k]*n;
+                            // c[i*size+j] += a[i*size+k]*n;
                         }
                     }
                 }
@@ -99,7 +98,8 @@ int main(int argc,char *argv[]) {
                     for(j=0;j<size;j++) {
                         n = b[k*size+j];
                         for(i=0;i<size;i++) {
-                            c[i*size+j] += a[i*size+k]*n;
+                            sm = a[i*size+k]*n;
+                            // c[i*size+j] += a[i*size+k]*n;
                         }
                     }
                 }
