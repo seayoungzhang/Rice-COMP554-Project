@@ -16,7 +16,7 @@ int main(int argc,char *argv[]) {
 
     start = atoi(argv[2]);
     end = atoi(argv[3]);
-    for(size=start;size<end;size+=25) {
+    for(size=start;size<end;size+=5) {
         a = (float*)malloc(sizeof(float)*size*size);
         b = (float*)malloc(sizeof(float)*size*size);
         c = (float*)malloc(sizeof(float)*size*size);
@@ -113,7 +113,7 @@ int main(int argc,char *argv[]) {
                 time2.tv_usec+=1000000L;
                 time2.tv_sec-=1;
             }
-            printf("%ld.%ld,",time2.tv_sec,time2.tv_usec);
+            printf("%ld.%06ld,",time2.tv_sec,time2.tv_usec);
         }
         printf("\n");
         free(a);
