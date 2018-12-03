@@ -7,7 +7,7 @@
 int main(int argc,char *argv[]) {
     float **a,**b,**c, sm, m, n;
     long int i, j, k, t, size, num, start, end;
-    struct timeval time1,time2;
+    clock_t time1, time2;
 
     if(argc<2) {
         printf("\n\tUsage:%s <innerloop> <start> <end> <num>\n", argv[0]);
@@ -45,7 +45,7 @@ int main(int argc,char *argv[]) {
         num = atoi(argv[4]);
         for(t=0;t<num;++t) {
             if(strcmp(argv[1], "ijk") == 0) {
-                gettimeofday(&time1,NULL);
+                time1 = clock();
                 for(i=0;i<size;i++) {
                     for(j=0;j<size;j++) {
                         sm = 0.0;
@@ -55,10 +55,10 @@ int main(int argc,char *argv[]) {
                         c[i][j] = sm;
                     }
                 }
-                gettimeofday(&time2,NULL);
+                time2 = clock();
             }
             if(strcmp(argv[1], "jik") == 0) {
-                gettimeofday(&time1,NULL);
+                time1 = clock();
                 for(j=0;j<size;j++) {
                     for(i=0;i<size;i++) {
                         sm = 0.0;
@@ -68,10 +68,10 @@ int main(int argc,char *argv[]) {
                         c[i][j] += sm;
                     }
                 }
-                gettimeofday(&time2,NULL);
+                time2 = clock();
             }
             if(strcmp(argv[1], "ikj") == 0) {
-                gettimeofday(&time1,NULL);
+                time1 = clock();
                 for(i=0;i<size;i++) {
                     for(k=0;k<size;k++) {
                         m = a[i][k];
@@ -80,10 +80,10 @@ int main(int argc,char *argv[]) {
                         }
                     }
                 }
-                gettimeofday(&time2,NULL);
+                time2 = clock();
             }
             if(strcmp(argv[1], "kij") == 0) {
-                gettimeofday(&time1,NULL);
+                time1 = clock();
                 for(k=0;k<size;k++) {
                     for(i=0;i<size;i++) {
                         m = a[i][k];
@@ -92,10 +92,10 @@ int main(int argc,char *argv[]) {
                         }
                     }
                 }
-                gettimeofday(&time2,NULL);
+                time2 = clock();
             }
             if(strcmp(argv[1], "jki") == 0) {
-                gettimeofday(&time1,NULL);
+                time1 = clock();
                 for(j=0;j<size;j++) {
                     for(k=0;k<size;k++) {
                         n = b[k][j];
@@ -104,10 +104,10 @@ int main(int argc,char *argv[]) {
                         }
                     }
                 }
-                gettimeofday(&time2,NULL);
+                time2 = clock();
             }
             if(strcmp(argv[1], "kji") == 0) {
-                gettimeofday(&time1,NULL);
+                time1 = clock();
                 for(k=0;k<size;k++) {
                     for(j=0;j<size;j++) {
                         n = b[k][j];
@@ -116,17 +116,10 @@ int main(int argc,char *argv[]) {
                         }
                     }
                 }
-                gettimeofday(&time2,NULL);
+                time2 = clock();
             }
 
-            time2.tv_sec-=time1.tv_sec;
-            time2.tv_usec-=time1.tv_usec;
-
-            if (time2.tv_usec<0L){
-                time2.tv_usec+=1000000L;
-                time2.tv_sec-=1;
-            }
-            printf("%ld.%06ld,",time2.tv_sec,time2.tv_usec);
+            printf("%ld,",time2-time1);
         }
         printf("\n");
         free(a[0]);

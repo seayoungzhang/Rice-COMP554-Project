@@ -1,9 +1,9 @@
 #!/bin/bash
 
 gcc ./test.c -o test
-./test ijk 5 501 10 > ijk.csv
-./test jik 5 501 10 > jik.csv
-./test ikj 5 501 10 > ikj.csv
-./test kij 5 501 10 > kij.csv
-./test jki 5 501 10 > jki.csv
-./test kji 5 501 10 > kji.csv
+./test ijk 5 1000 10 > ijk.csv
+./test jik 5 1000 10 > jik.csv
+./test ikj 5 1000 10 > ikj.csv
+./test kij 5 1000 10 > kij.csv
+./test jki 5 1000 10 > jki.csv
+./test kji 5 1000 10 > kji.csv
