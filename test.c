@@ -5,8 +5,8 @@
 #include <string.h>
 
 int main(int argc,char *argv[]) {
-    float *a,*b,*c;
-    long int i, j, k, t, size, num, m, n, sm, start, end;
+    float **a,**b,**c, sm, m, n;
+    long int i, j, k, t, size, num, start, end;
     struct timeval time1,time2;
 
     if(argc<2) {
@@ -16,15 +16,28 @@ int main(int argc,char *argv[]) {
 
     start = atoi(argv[2]);
     end = atoi(argv[3]);
-    for(size=start;size<end;size+=5) {
-        a = (float*)malloc(sizeof(float)*size*size);
-        b = (float*)malloc(sizeof(float)*size*size);
-        c = (float*)malloc(sizeof(float)*size*size);
+    for(size=start;size<=end;size+=5) {
+        a = (float**)malloc(size*sizeof(float*));
+        a[0] = (float*)malloc(size*size*sizeof(float));
+        for(i=1;i<size;i++) {
+            a[i] = a[i-1] + size;
+        }
+        b = (float**)malloc(size*sizeof(float*));
+        b[0] = (float*)malloc(size*size*sizeof(float));
+        for(i=1;i<size;i++) {
+            b[i] = b[i-1] + size;
+        }
+        c = (float**)malloc(size*sizeof(float*));
+        c[0] = (float*)malloc(size*size*sizeof(float));
+        for(i=1;i<size;i++) {
+            c[i] = c[i-1] + size;
+        }
+
         for(i=0;i<size;i++) {
             for(j=0;j<size;j++) {
-                a[i*size+j] = (float)(rand()%1000/100.0);
-                b[i*size+j] = (float)(rand()%1000/100.0);
-                c[i*size+j] = 0;
+                a[i][j] = (float)(rand()%1000/100.0);
+                b[i][j] = (float)(rand()%1000/100.0);
+                c[i][j] = 0.0;
             }
         }
 
@@ -35,9 +48,11 @@ int main(int argc,char *argv[]) {
                 gettimeofday(&time1,NULL);
                 for(i=0;i<size;i++) {
                     for(j=0;j<size;j++) {
+                        sm = 0.0;
                         for(k=0;k<size;k++) {
-                            sm = a[i*size+k]*b[k*size+j];
+                            sm += a[i][k]*b[k][j];
                         }
+                        c[i][j] = sm;
                     }
                 }
                 gettimeofday(&time2,NULL);
@@ -46,9 +61,11 @@ int main(int argc,char *argv[]) {
                 gettimeofday(&time1,NULL);
                 for(j=0;j<size;j++) {
                     for(i=0;i<size;i++) {
+                        sm = 0.0;
                         for(k=0;k<size;k++) {
-                            sm = a[i*size+k]*b[k*size+j];
+                            sm += a[i][k]*b[k][j];
                         }
+                        c[i][j] += sm;
                     }
                 }
                 gettimeofday(&time2,NULL);
@@ -57,10 +74,9 @@ int main(int argc,char *argv[]) {
                 gettimeofday(&time1,NULL);
                 for(i=0;i<size;i++) {
                     for(k=0;k<size;k++) {
-                        m = a[i*size+k];
+                        m = a[i][k];
                         for(j=0;j<size;j++) {
-                            sm = m*b[k*size+j];
-                            // c[i*size+j] += m*b[k*size+j];
+                            c[i][j] += m*b[k][j];
                         }
                     }
                 }
@@ -70,10 +86,9 @@ int main(int argc,char *argv[]) {
                 gettimeofday(&time1,NULL);
                 for(k=0;k<size;k++) {
                     for(i=0;i<size;i++) {
-                        m = a[i*size+k];
+                        m = a[i][k];
                         for(j=0;j<size;j++) {
-                            sm = m*b[k*size+j];
-                            // c[i*size+j] += m*b[k*size+j];
+                            c[i][j] += m*b[k][j];
                         }
                     }
                 }
@@ -83,10 +98,9 @@ int main(int argc,char *argv[]) {
                 gettimeofday(&time1,NULL);
                 for(j=0;j<size;j++) {
                     for(k=0;k<size;k++) {
-                        n = b[k*size+j];
+                        n = b[k][j];
                         for(i=0;i<size;i++) {
-                            sm = a[i*size+k]*n;
-                            // c[i*size+j] += a[i*size+k]*n;
+                            c[i][j] += a[i][k]*n;
                         }
                     }
                 }
@@ -96,10 +110,9 @@ int main(int argc,char *argv[]) {
                 gettimeofday(&time1,NULL);
                 for(k=0;k<size;k++) {
                     for(j=0;j<size;j++) {
-                        n = b[k*size+j];
+                        n = b[k][j];
                         for(i=0;i<size;i++) {
-                            sm = a[i*size+k]*n;
-                            // c[i*size+j] += a[i*size+k]*n;
+                            c[i][j] += a[i][k]*n;
                         }
                     }
                 }
@@ -116,6 +129,9 @@ int main(int argc,char *argv[]) {
             printf("%ld.%06ld,",time2.tv_sec,time2.tv_usec);
         }
         printf("\n");
+        free(a[0]);
+        free(b[0]);
+        free(c[0]);
         free(a);
         free(b);
         free(c);
